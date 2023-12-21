@@ -5,21 +5,20 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Link } from "react-router-dom";
+import { handleLogIn } from "./firebaseAuth";
+import { useNavigate } from 'react-router-dom';
 
 function Copyright(props: any) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
             {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
         </Typography>
@@ -30,13 +29,35 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 function Login(props: any) {
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const navigate = useNavigate();
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        const loginDetails = {
+            email: data.get('email')?.toString(),
+            password: data.get('password')?.toString(),
+        }
+        if (loginDetails.email && loginDetails.email?.length < 4) {
+            alert('Please enter an email address.');
+            return;
+        }
+        if (loginDetails.password && loginDetails.password?.length < 4) {
+            alert('Please enter a password.');
+            return;
+        }
+
+        console.log(loginDetails);
+
+        if (loginDetails.email && loginDetails.password) {
+            const result = await handleLogIn(loginDetails.email, loginDetails.password);
+            if (result?.email === loginDetails.email) {
+                navigate("/")
+            }
+            console.log("login deatils", result)
+        } else {
+            alert('Please enter correct details!');
+            return;
+        }
     };
 
     return (
@@ -57,7 +78,7 @@ function Login(props: any) {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
                             required
@@ -84,20 +105,16 @@ function Login(props: any) {
                         />
                         <Button
                             type="submit"
+                            id="sign-in"
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                         >
                             Sign In
                         </Button>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Forgot password?
-                                </Link>
-                            </Grid>
+                        <Grid container justifyContent="flex-end">
                             <Grid item>
-                                <Link href="#" variant="body2">
+                                <Link to="/register">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>
