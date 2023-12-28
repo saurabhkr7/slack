@@ -12,8 +12,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link } from "react-router-dom";
-import { handleLogIn } from "./firebaseAuth";
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from "../../contexts/AuthProvider";
 
 function Copyright(props: any) {
     return (
@@ -26,10 +25,21 @@ function Copyright(props: any) {
 }
 
 // TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme();
+const primary = {
+    main: '#1976d2',
+    light: '#42a5f5',
+    dark: '#1565c0',
+    contrastText: '#fff',
+};
+
+const defaultTheme = createTheme({
+    palette: {
+        primary: primary
+    },
+});
 
 function Login(props: any) {
-    const navigate = useNavigate();
+    const { loginAction } = useAuth();
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -37,22 +47,9 @@ function Login(props: any) {
             email: data.get('email')?.toString(),
             password: data.get('password')?.toString(),
         }
-        if (loginDetails.email && loginDetails.email?.length < 4) {
-            alert('Please enter an email address.');
-            return;
-        }
-        if (loginDetails.password && loginDetails.password?.length < 4) {
-            alert('Please enter a password.');
-            return;
-        }
-
         console.log(loginDetails);
-
         if (loginDetails.email && loginDetails.password) {
-            const result = await handleLogIn(loginDetails.email, loginDetails.password);
-            if (result?.email === loginDetails.email) {
-                navigate("/")
-            }
+            const result = await loginAction(loginDetails.email, loginDetails.password);
             console.log("login deatils", result)
         } else {
             alert('Please enter correct details!');
@@ -62,7 +59,7 @@ function Login(props: any) {
 
     return (
         <ThemeProvider theme={defaultTheme}>
-            <Container component="main" maxWidth="xs">
+            <Container component="main" maxWidth="xs" color=''>
                 <CssBaseline />
                 <Box
                     sx={{
@@ -71,8 +68,9 @@ function Login(props: any) {
                         flexDirection: 'column',
                         alignItems: 'center',
                     }}
+                    color={primary.light}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                    <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
