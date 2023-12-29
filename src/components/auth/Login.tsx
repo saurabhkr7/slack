@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,6 +13,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthProvider";
+import { useNavigate } from 'react-router-dom';
+
 
 function Copyright(props: any) {
     return (
@@ -39,7 +41,11 @@ const defaultTheme = createTheme({
 });
 
 function Login(props: any) {
-    const { loginAction } = useAuth();
+    const navigate = useNavigate()
+    const { token, loginAction } = useAuth();
+    useEffect(() => {
+        if (token) return navigate("/");
+    })
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);

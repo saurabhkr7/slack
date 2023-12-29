@@ -14,6 +14,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link } from "react-router-dom";
 import { handleSignUp } from "./firebaseAuth";
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthProvider';
+import { useEffect } from 'react';
 
 
 function Copyright(props: any) {
@@ -31,7 +33,10 @@ const defaultTheme = createTheme();
 
 export default function Register() {
     const navigate = useNavigate();
-
+    const { token } = useAuth();
+    useEffect(() => {
+        if (token) return navigate("/");
+    })
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);

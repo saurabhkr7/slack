@@ -3,10 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 import { initializeApp } from 'firebase/app';
 import {
-  // createUserWithEmailAndPassword,
   getAuth,
   signInWithEmailAndPassword,
-  // signOut,
+  signOut,
 } from 'firebase/auth';
 import { firebaseConfig } from '../components/auth/config';
 
@@ -27,7 +26,7 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<userType>(null);
+  const [user, setUser] = useState<userType>({ email: localStorage.getItem("email"), accessToken: "" });
   const [token, setToken] = useState(localStorage.getItem("site") || "");
   const navigate = useNavigate();
   const loginAction = async (email: string, password: string): Promise<any> => {
@@ -36,11 +35,13 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       console.log("success", result)
       const resEmail = result.user.email;
       const resToken = await result.user.getIdToken();
-
-      setUser({ email: resEmail, accessToken: resToken });
-      setToken(resToken);
-      localStorage.setItem("site", resToken);
-      navigate("/");
+      if (resEmail) {
+        setUser({ email: resEmail, accessToken: resToken });
+        setToken(resToken);
+        localStorage.setItem("site", resToken);
+        localStorage.setItem("email", resEmail?.toString());
+        navigate("/");
+      }
       return;
     }).catch(function (error) {
       // Handle Errors here.
@@ -57,9 +58,10 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const logout = () => {
+    signOut(auth);
     setUser(null);
     setToken("");
-    localStorage.removeItem("site");
+    localStorage.clear();
     navigate("/login");
   };
 
