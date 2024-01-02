@@ -1,0 +1,6 @@
+.messagePanle {
+    min-height: calc(100vh - 16px);
+    min-width: 85rem;
+    display: flex;
+    background-color: #e4e4e4;
+}

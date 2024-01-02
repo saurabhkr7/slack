@@ -1,4 +1,4 @@
-import './Title.css';
+import styles from "./Title.module.css";
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import Popover from '@mui/material/Popover';
@@ -22,10 +22,10 @@ const Title = () => {
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
 
-    return <div className="title">
+    return <div className={styles.title}>
         <h1>Slack</h1>
-        <div className="username">
-            <Stack direction="row" spacing={1} sx={{ alignItems: 'flex-end', margin: "0 2rem 2rem", cursor: 'pointer' }} onClick={(e) => handleClick(e)}>
+        <div className={styles.username}>
+            <Stack direction="row" spacing={1} className={styles.stack} onClick={(e) => handleClick(e)}>
                 <Avatar alt="User" />
                 <h1>Saurabh</h1>
             </Stack>

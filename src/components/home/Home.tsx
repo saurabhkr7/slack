@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import ColorPanel from "../colorpanel/ColorPanel";
 import SidePanel from "../sidepanel/SidePanel";
 import { Box } from "@mui/material";
+import MessagePanel from "../mainpanel/MessagePanel";
 
 
 const Home = () => {
@@ -18,6 +19,7 @@ const Home = () => {
         <Grid container direction='row' wrap='nowrap'>
             <ColorPanel />
             <SidePanel />
+            <MessagePanel />
         </Grid>
     </Box>
 }

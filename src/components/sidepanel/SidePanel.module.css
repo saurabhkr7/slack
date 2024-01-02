@@ -1,0 +1,7 @@
+.sidePanle {
+    min-height: calc(100vh - 16px);
+    min-width: 18rem;
+    display: flex;
+    flex-direction: column !important;
+    background-color: #ad7171;
+}

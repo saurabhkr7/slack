@@ -44,3 +44,10 @@ h1 em {
     white-space: nowrap;
     padding-bottom: 13px;
 }
+
+.stack {
+    align-items: flex-end;
+    cursor: pointer;
+    padding: 8px 0;
+    margin: 0 16px;
+}

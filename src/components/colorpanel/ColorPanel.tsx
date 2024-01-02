@@ -1,25 +1,14 @@
-import styled from '@emotion/styled';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
 import AddIcon from '@mui/icons-material/Add';
-import Paper from '@mui/material/Paper';
+import styles from "./ColorPanel.module.css"
 
 
 const ColorPanel = () => {
 
-    const Item = styled(Paper)(() => ({
-        textAlign: 'center',
-        minHeight: "calc(100vh - 16px)",
-        maxWidth: "60px",
-        minWidth: "60px",
-        display: 'flex',
-        background: 'black',
-        flexDirection: 'column'
-    }));
     return <Grid container item sx={{ maxWidth: 'fit-content' }}>
-        <Grid item>
-            <Item>
+        <Grid item className={styles.colorPanel}>
                 <Card sx={{
                     minWidth: 50,
                     maxWidth: 50,
@@ -34,8 +23,7 @@ const ColorPanel = () => {
                     <CardContent>
                         <AddIcon fontSize='large' />
                     </CardContent>
-                </Card>
-            </Item>
+            </Card>
         </Grid>
     </Grid >
 }

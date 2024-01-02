@@ -1,0 +1,9 @@
+.colorPanel {
+    min-height: calc(100vh - 16px);
+    min-width: 60px;
+    max-width: 60px;
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    text-align: center;
+}
